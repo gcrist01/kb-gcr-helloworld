@@ -4,6 +4,8 @@ pipeline {
     environment {
         PROJECT_NAME = 'MinimalWebApp'
         DOCKER_IMAGE = 'minimal-webapp'
+        DOTNET_CLI_HOME = "${env.WORKSPACE}/.dotnet"
+        PATH = "${env.WORKSPACE}/.dotnet/tools:${env.PATH}"
     }
 
     stages {
