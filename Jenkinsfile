@@ -1,0 +1,41 @@
+pipeline {
+    agent any
+
+    environment {
+        PROJECT_NAME = 'MinimalWebApp'
+        DOCKER_IMAGE = 'minimal-webapp'
+    }
+
+    stages {
+        stage('Restore & Build') {
+            steps {
+                echo "Restoring and building .NET project..."
+                sh "dotnet restore ${PROJECT_NAME}/${PROJECT_NAME}.csproj"
+                sh "dotnet build ${PROJECT_NAME}/${PROJECT_NAME}.csproj --configuration Release"
+            }
+        }
+
+        stage('Run Tests (optional)') {
+            steps {
+                echo "No tests defined. Skipping test stage."
+                // sh "dotnet test ${PROJECT_NAME}"  # uncomment if tests exist
+            }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                echo "Building Docker image..."
+                sh "docker build -t ${DOCKER_IMAGE} ${PROJECT_NAME}"
+            }
+        }
+    }
+
+    post {
+        success {
+            echo "✅ Build and Docker image completed successfully."
+        }
+        failure {
+            echo "❌ Build failed."
+        }
+    }
+}
