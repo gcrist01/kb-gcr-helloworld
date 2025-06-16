@@ -32,6 +32,9 @@ pipeline {
         }
 
         stage('Build') {
+            environment {
+                KB_STAGE_NAME="Build"
+            }
             steps {
                 echo "Use Cake Build..."
                 sh "ls -lart /home/jenkins/template-run/"
@@ -42,6 +45,9 @@ pipeline {
         }
 
         stage('Accept') {
+            environment {
+                KB_STAGE_NAME="Accept"
+            }
             steps {
                 echo "Accept..."
             }
