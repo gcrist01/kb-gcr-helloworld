@@ -25,11 +25,15 @@ pipeline {
         }
 
         stage('Build') {
-            echo "Build..."
+            steps {
+                echo "Build..."
+            }
         }
 
         stage('Accept') {
-            echo "Accept..."
+            steps {
+                echo "Accept..."
+            }
         }
     }
 }
