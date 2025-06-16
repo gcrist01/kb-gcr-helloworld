@@ -12,7 +12,7 @@ pipeline {
         // Hacks to make the cake build find the config
         BUILD_CAKE_SCRIPT="/home/jenkins/template-run/cake/build.min.cake"
         KB_CODEBUILD_SRC_DIR="${env.WORKSPACE}"
-        KB_SCRIPT_PATH=".pipelineconfig"
+        KB_SCRIPT_PATH="MinimalWebApp2/.pipelineconfig"
 
         // Hacks to make it work as the CICD environment would
         PROD_ECR_HOST_NAME="250300400957.dkr.ecr.ap-southeast-2.amazonaws.com"
@@ -43,7 +43,7 @@ pipeline {
             }
             steps {
                 echo "Use Cake Build..."
-                sh "ls -lart /home/jenkins/template-run/"
+                //sh "ls -lart /home/jenkins/template-run/"
                 dir("MinimalWebApp2") {
                     sh "dotnet cake ${BUILD_CAKE_SCRIPT} --verbosity Verbose"
                 }
