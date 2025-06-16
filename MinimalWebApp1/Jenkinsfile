@@ -26,10 +26,12 @@ pipeline {
         stage('Restore & Build') {
             steps {
                 echo "Restoring and building .NET project..."
-                sh "pwd"
-                sh "ls -lart"
-                sh "dotnet restore MinimalWebApp1/${PROJECT_NAME}.csproj"
-                sh "dotnet build MinimalWebApp1/${PROJECT_NAME}.csproj --configuration Release"
+                dir("MinimalWebApp1") {
+                    sh "pwd"
+                    sh "ls -lart"
+                    sh "dotnet restore ${PROJECT_NAME}.csproj"
+                    sh "dotnet build ${PROJECT_NAME}.csproj --configuration Release"
+                }
             }
         }
 
