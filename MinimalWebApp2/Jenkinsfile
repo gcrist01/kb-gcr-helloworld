@@ -53,7 +53,7 @@ pipeline {
                             cakeScript = "/home/jenkins/template-run/cake/build.min.cake"
                         }
                         echo "Calling cake ${cakeScript}"
-                        //sh "dotnet cake ${cakeScript} --nugetconfig ${HOME}/.nuget/NuGet/NuGet.Config --verbosity Verbose"
+                        sh "dotnet cake ${cakeScript} --nugetconfig ${HOME}/.nuget/NuGet/NuGet.Config --verbosity Verbose"
                     }
                 }
             }
