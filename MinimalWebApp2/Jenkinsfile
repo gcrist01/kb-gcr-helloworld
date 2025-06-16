@@ -52,7 +52,7 @@ pipeline {
                             // use default
                             cakeScript = "/home/jenkins/template-run/cake/build.min.cake"
                         }
-                        //echo "Calling BUILD_CAKE_SCRIPT config is ${BUILD_CAKE_SCRIPT}"
+                        echo "Calling cake ${cakeScript}"
                         //sh "dotnet cake ${cakeScript} --nugetconfig ${HOME}/.nuget/NuGet/NuGet.Config --verbosity Verbose"
                     }
                 }
