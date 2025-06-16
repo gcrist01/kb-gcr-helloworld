@@ -9,6 +9,7 @@ pipeline {
         PATH = "${env.WORKSPACE}/.dotnet/tools:${env.PATH}"
         DOTNET_CLI_TELEMETRY_OPTOUT = 1
         BUILD_CAKE_SCRIPT="/home/jenkins/template-run/cake/build.min.cake"
+        KB_CODEBUILD_SRC_DIR="${env.WORKSPACE}"
     }
 
     stages {
