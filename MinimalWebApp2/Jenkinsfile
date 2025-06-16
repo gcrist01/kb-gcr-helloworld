@@ -9,10 +9,12 @@ pipeline {
         PATH = "${env.WORKSPACE}/.dotnet/tools:${env.PATH}"
         DOTNET_CLI_TELEMETRY_OPTOUT = 1
 
-        // Hacks to make it work as the CICD environment would
+        // Hacks to make the cake build find the config
         BUILD_CAKE_SCRIPT="/home/jenkins/template-run/cake/build.min.cake"
         KB_CODEBUILD_SRC_DIR="${env.WORKSPACE}"
-        KB_SCRIPT_PATH="${env.WORKSPACE}"
+        KB_SCRIPT_PATH=".pipelineconfig"
+
+        // Hacks to make it work as the CICD environment would
         PROD_ECR_HOST_NAME="250300400957.dkr.ecr.ap-southeast-2.amazonaws.com"
         NON_PROD_ECR_HOST_NAME="041371538652.dkr.ecr.ap-southeast-2.amazonaws.com"
         SERVICEACCOUNT_NAME="sf-thing-api"
