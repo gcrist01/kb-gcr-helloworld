@@ -1,1 +1,2 @@
-@template("default")
+build()
+accept()
