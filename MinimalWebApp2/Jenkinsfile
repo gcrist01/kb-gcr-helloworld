@@ -19,7 +19,7 @@ pipeline {
         STAGE_ECR_HOST_NAME="041371538652.dkr.ecr.ap-southeast-2.amazonaws.com"
 
         // Hacks to make the cake build find the config
-        BUILD_CAKE_SCRIPT="/home/jenkins/template-run/cake/build.min.cake"
+        //BUILD_CAKE_SCRIPT="/home/jenkins/template-run/cake/build.min.cake"
         KB_CODEBUILD_SRC_DIR="${env.WORKSPACE}"
         KB_SCRIPT_PATH="MinimalWebApp2/.pipelineconfig"
     }
@@ -46,7 +46,18 @@ pipeline {
             }
             steps {
                 echo "Use Cake Build..."
-                //sh "ls -lart /home/jenkins/template-run/"
+                script {
+                    def config = readYaml file: "${KB_CODEBUILD_SRC_DIR}/${KB_SCRIPT_PATH}/pipeline.yaml"
+                    def cakeScript = "${build.cakeScript}"
+                    if (cakeScript) {
+                        env.BUILD_CAKE_SCRIPT = cakeScript
+                        echo "VERSION set to ${env.VERSION}"
+                    } else {
+                        echo "No build.cakeScript configured, env.BUILD_CAKE_SCRIPT use dafult"
+                        env.BUILD_CAKE_SCRIPT = "/home/jenkins/template-run/cake/build.min.cake"
+                    }
+
+                }
                 dir("MinimalWebApp2") {
                     sh "dotnet cake ${BUILD_CAKE_SCRIPT} --nugetconfig ${HOME}/.nuget/NuGet/NuGet.Config --verbosity Verbose"
                 }
