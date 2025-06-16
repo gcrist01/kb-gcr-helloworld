@@ -9,6 +9,16 @@ pipeline {
     }
 
     stages {
+        stage('Setup') {
+            steps {
+                echo "Setup..."
+                sh "uname -a"
+                sh "dotnet --version"
+                sh "dotnet cake --info"
+                sh "ls -lart /root/template-run/"
+            }
+        }
+
         stage('Restore & Build') {
             steps {
                 echo "Restoring and building .NET project..."
