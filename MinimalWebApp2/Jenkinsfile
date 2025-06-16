@@ -1,0 +1,35 @@
+pipeline {
+    agent { label 'agent1' }
+
+    environment {
+        PROJECT_NAME = 'MinimalWebApp'
+        DOCKER_IMAGE = 'minimal-webapp'
+        DOTNET_CLI_HOME = "${env.WORKSPACE}/.dotnet"
+        DOCKER_CONFIG="/home/jenkins/.docker"
+        PATH = "${env.WORKSPACE}/.dotnet/tools:${env.PATH}"
+        DOTNET_CLI_TELEMETRY_OPTOUT = 1
+    }
+
+    stages {
+        stage('Setup & Hacks') {
+            steps {
+                echo "Setup..."
+                sh "uname -a"
+                sh "dotnet --version"
+                sh "id"
+                sh "ls -lart /home/jenkins/template-run/" //ls: cannot access '/root/template-run/': Permission denied
+                sh "dotnet new tool-manifest --force"
+                sh "dotnet tool restore"
+                sh "dotnet cake --info"
+            }
+        }
+
+        stage('Build') {
+            echo "Build..."
+        }
+
+        stage('Accept') {
+            echo "Accept..."
+        }
+    }
+}

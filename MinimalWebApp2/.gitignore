@@ -1,0 +1,44 @@
+## Build artifacts
+bin/
+obj/
+out/
+TestResults/
+*.log
+
+## User-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+## Rider
+.idea/
+
+## VS Code
+.vscode/
+
+## Visual Studio
+.vs/
+
+## Mac junk
+.DS_Store
+
+## Docker
+*.db
+docker-compose.override.yml
+.env
+
+## NuGet
+*.nupkg
+*.snupkg
+.nuget/
+packages/
+
+## Others
+*.db
+*.sqlite
+*.pdb
+*.mdb
+*.bak
+*.swp
+*~
