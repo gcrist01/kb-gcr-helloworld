@@ -1,4 +1,1 @@
 @template("default")
-pipeline {
-  agent any
-}
