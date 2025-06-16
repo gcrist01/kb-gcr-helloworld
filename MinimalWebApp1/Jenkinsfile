@@ -28,8 +28,8 @@ pipeline {
                 echo "Restoring and building .NET project..."
                 sh "pwd"
                 sh "ls -lart"
-                sh "dotnet restore ${PROJECT_NAME}.csproj"
-                sh "dotnet build ${PROJECT_NAME}.csproj --configuration Release"
+                sh "dotnet restore MinimalWebApp1/${PROJECT_NAME}.csproj"
+                sh "dotnet build MinimalWebApp1/${PROJECT_NAME}.csproj --configuration Release"
             }
         }
 
@@ -42,8 +42,10 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                echo "Building Docker image..."
-                sh "docker build -t ${DOCKER_IMAGE}"
+                dir("MinimalWebApp1") {
+                    echo "Building Docker image..."
+                    sh "docker build -t ${DOCKER_IMAGE}"
+                }
             }
         }
     }
