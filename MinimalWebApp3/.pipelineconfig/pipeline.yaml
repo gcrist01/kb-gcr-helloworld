@@ -1,0 +1,12 @@
+template: service-foundation-app-pr:250311165857
+config:
+  pipelineName: "kb-sf-helloworld"
+  build:
+    cakeScript: /home/jenkins/template-run/cake/build.min.cake
+    dockerImageBuild:
+    - image: tipu/foo-webapi
+      buildargs: []
+      dockerfile: MinimalWebApp2/Dockerfile
+      context: MinimalWebApp2/
+    ecrImagePush:
+    - tipu/foo-webapi
