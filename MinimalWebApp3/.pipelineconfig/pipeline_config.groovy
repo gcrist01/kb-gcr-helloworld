@@ -1,3 +1,2 @@
-libraries {
-    dotnet
-}
+libraries:
+  - dotnet
