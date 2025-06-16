@@ -1,0 +1,71 @@
+pipeline {
+    agent {
+        label 'cake'
+    }
+
+    environment {
+        PROJECT_NAME = 'MinimalWebApp'
+        DOCKER_IMAGE = 'minimal-webapp'
+        DOTNET_CLI_HOME = "${env.WORKSPACE}/.dotnet"
+        DOCKER_CONFIG="/home/jenkins/.docker"
+        PATH = "${env.WORKSPACE}/.dotnet/tools:${env.PATH}"
+        DOTNET_CLI_TELEMETRY_OPTOUT = 1
+
+        // Hacks to make it work as the CICD environment would
+        PROD_ECR_HOST_NAME="250300400957.dkr.ecr.ap-southeast-2.amazonaws.com"
+        NON_PROD_ECR_HOST_NAME="041371538652.dkr.ecr.ap-southeast-2.amazonaws.com"
+        SERVICEACCOUNT_NAME="sf-thing-api"
+        STAGE_ACCOUNT_ID="041371538652"
+        STAGE_ECR_HOST_NAME="041371538652.dkr.ecr.ap-southeast-2.amazonaws.com"
+
+        // Hacks to make the cake build find the config
+        KB_CODEBUILD_SRC_DIR="${env.WORKSPACE}"
+        KB_SCRIPT_PATH="MinimalWebApp2/.pipelineconfig"
+    }
+
+    stages {
+        stage('Setup & Hacks') {
+            steps {
+                echo "Setup..."
+                sh "uname -a"
+                sh "id"
+                sh "dotnet new tool-manifest --force"
+                sh "dotnet tool restore"
+                sh "dotnet cake --info"
+            }
+        }
+
+        stage('Build') {
+            environment {
+                KB_STAGE_NAME="Build"
+            }
+            steps {
+                echo "Use Cake Build..."
+                dir("MinimalWebApp2") {
+                    script {
+                        def cakeScript = sh(script: "yq '.config.build.cakeScript' ${KB_CODEBUILD_SRC_DIR}/${KB_SCRIPT_PATH}/pipeline.yaml", returnStdout: true).trim()
+                        echo "BUILD_CAKE_SCRIPT config is ${cakeScript}"
+                        if (cakeScript) {
+                            echo "cakeScript configured"
+                        }
+                        else{
+                            // use default
+                            cakeScript = "/home/jenkins/template-run/cake/build.min.cake"
+                        }
+                        echo "Calling cake ${cakeScript}"
+                        sh "dotnet cake ${cakeScript} --nugetconfig ${HOME}/.nuget/NuGet/NuGet.Config --verbosity Verbose"
+                    }
+                }
+            }
+        }
+
+        stage('Accept') {
+            environment {
+                KB_STAGE_NAME="Accept"
+            }
+            steps {
+                echo "Accept..."
+            }
+        }
+    }
+}
