@@ -12,8 +12,8 @@ pipeline {
         stage('Restore & Build') {
             steps {
                 echo "Restoring and building .NET project..."
-                sh "dotnet restore ${PROJECT_NAME}/${PROJECT_NAME}.csproj"
-                sh "dotnet build ${PROJECT_NAME}/${PROJECT_NAME}.csproj --configuration Release"
+                sh "dotnet restore ${PROJECT_NAME}.csproj"
+                sh "dotnet build ${PROJECT_NAME}.csproj --configuration Release"
             }
         }
 
@@ -27,7 +27,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 echo "Building Docker image..."
-                sh "docker build -t ${DOCKER_IMAGE} ${PROJECT_NAME}"
+                sh "docker build -t ${DOCKER_IMAGE}"
             }
         }
     }
