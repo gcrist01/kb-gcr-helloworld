@@ -2,7 +2,7 @@ template: service-foundation-app-pr:250311165857
 config:
   pipelineName: "kb-sf-helloworld"
   build:
-    #cakeScript: MinimalWebApp2/build.cake
+    cakeScript: MinimalWebApp2/build.cake
     dockerImageBuild:
     - image: tipu/foo-webapi
       buildargs: []
