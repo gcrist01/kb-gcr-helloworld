@@ -6,6 +6,7 @@ pipeline {
         DOCKER_IMAGE = 'minimal-webapp'
         DOTNET_CLI_HOME = "${env.WORKSPACE}/.dotnet"
         PATH = "${env.WORKSPACE}/.dotnet/tools:${env.PATH}"
+        DOTNET_CLI_TELEMETRY_OPTOUT = 1
     }
 
     stages {
@@ -14,8 +15,11 @@ pipeline {
                 echo "Setup..."
                 sh "uname -a"
                 sh "dotnet --version"
-                //sh "dotnet cake --info"
-                sh "ls -lart /root/template-run/"
+                sh "id"
+                sh "ls -lart /root/template-run/" //ls: cannot access '/root/template-run/': Permission denied
+                sh "dotnet new tool-manifest --force"
+                sh "dotnet tool restore"
+                sh "dotnet cake --info"
             }
         }
 
