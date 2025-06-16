@@ -16,7 +16,7 @@ pipeline {
                 sh "uname -a"
                 sh "dotnet --version"
                 sh "id"
-                sh "ls -lart /root/template-run/" //ls: cannot access '/root/template-run/': Permission denied
+                sh "ls -lart /home/jenkins/template-run/" //ls: cannot access '/root/template-run/': Permission denied
                 sh "dotnet new tool-manifest --force"
                 sh "dotnet tool restore"
                 sh "dotnet cake --info"
