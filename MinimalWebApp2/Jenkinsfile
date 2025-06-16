@@ -11,6 +11,7 @@ pipeline {
         BUILD_CAKE_SCRIPT="/home/jenkins/template-run/cake/build.min.cake"
         KB_CODEBUILD_SRC_DIR="${env.WORKSPACE}"
         KB_SCRIPT_PATH="${env.WORKSPACE}"
+        PROD_ECR_HOST_NAME="041371538652.dkr.ecr.ap-southeast-2.amazonaws.com"
     }
 
     stages {
