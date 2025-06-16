@@ -8,6 +8,7 @@ pipeline {
         DOCKER_CONFIG="/home/jenkins/.docker"
         PATH = "${env.WORKSPACE}/.dotnet/tools:${env.PATH}"
         DOTNET_CLI_TELEMETRY_OPTOUT = 1
+        BUILD_CAKE_SCRIPT="/home/jenkins/template-run/cake/build.min.cake"
     }
 
     stages {
@@ -26,7 +27,11 @@ pipeline {
 
         stage('Build') {
             steps {
-                echo "Build..."
+                echo "Use Cake Build..."
+                sh "ls -lart /home/jenkins/template-run/"
+                dir("MinimalWebApp2") {
+                    sh "dotnet cake ${BUILD_CAKE_SCRIPT} --verbosity Verbose"
+                }
             }
         }
 
