@@ -19,7 +19,6 @@ pipeline {
         STAGE_ECR_HOST_NAME="041371538652.dkr.ecr.ap-southeast-2.amazonaws.com"
 
         // Hacks to make the cake build find the config
-        //BUILD_CAKE_SCRIPT="/home/jenkins/template-run/cake/build.min.cake"
         KB_CODEBUILD_SRC_DIR="${env.WORKSPACE}"
         KB_SCRIPT_PATH="MinimalWebApp2/.pipelineconfig"
     }
@@ -29,14 +28,10 @@ pipeline {
             steps {
                 echo "Setup..."
                 sh "uname -a"
-                //sh "dotnet --version"
                 sh "id"
-                //sh "ls -lart /home/jenkins/template-run/" //ls: cannot access '/root/template-run/': Permission denied
-                //sh "ls ${HOME}/.nuget/NuGet/NuGet.Config"
                 sh "dotnet new tool-manifest --force"
                 sh "dotnet tool restore"
                 sh "dotnet cake --info"
-                //sh "ls -lart ${env.WORKSPACE}"
             }
         }
 
@@ -46,6 +41,7 @@ pipeline {
             }
             steps {
                 echo "Use Cake Build..."
+                dir("MinimalWebApp2") {
                 script {
                     def cakeScript = sh(script: "yq '.config.build.cakeScript' ${KB_CODEBUILD_SRC_DIR}/${KB_SCRIPT_PATH}/pipeline.yaml", returnStdout: true).trim()
                     echo "BUILD_CAKE_SCRIPT config is ${cakeScript}"
@@ -56,8 +52,6 @@ pipeline {
                         // use default
                         cakeScript = "/home/jenkins/template-run/cake/build.min.cake"
                     }
-                }
-                dir("MinimalWebApp2") {
                     echo "Calling BUILD_CAKE_SCRIPT config is ${BUILD_CAKE_SCRIPT}"
                     sh "dotnet cake ${cakeScript} --nugetconfig ${HOME}/.nuget/NuGet/NuGet.Config --verbosity Verbose"
                 }
