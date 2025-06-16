@@ -32,7 +32,7 @@ pipeline {
                 sh "dotnet --version"
                 sh "id"
                 sh "ls -lart /home/jenkins/template-run/" //ls: cannot access '/root/template-run/': Permission denied
-                sh " ls ${HOME}/.nuget/NuGet/NuGet.Config"
+                sh "ls ${HOME}/.nuget/NuGet/NuGet.Config"
                 sh "dotnet new tool-manifest --force"
                 sh "dotnet tool restore"
                 sh "dotnet cake --info"
@@ -48,7 +48,7 @@ pipeline {
                 echo "Use Cake Build..."
                 //sh "ls -lart /home/jenkins/template-run/"
                 dir("MinimalWebApp2") {
-                    sh "dotnet cake ${BUILD_CAKE_SCRIPT} --nugetconfig "${HOME}/.nuget/NuGet/NuGet.Config" --verbosity Verbose"
+                    sh "dotnet cake ${BUILD_CAKE_SCRIPT} --nugetconfig ${HOME}/.nuget/NuGet/NuGet.Config --verbosity Verbose"
                 }
             }
         }
