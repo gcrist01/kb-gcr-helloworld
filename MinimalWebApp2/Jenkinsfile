@@ -19,7 +19,7 @@ pipeline {
         STAGE_ECR_HOST_NAME="041371538652.dkr.ecr.ap-southeast-2.amazonaws.com"
 
         // Hacks to make the cake build find the config
-        BUILD_CAKE_SCRIPT="/home/jenkins/template-run/cake/build.min.cake"
+        //BUILD_CAKE_SCRIPT="/home/jenkins/template-run/cake/build.min.cake"
         KB_CODEBUILD_SRC_DIR="${env.WORKSPACE}"
         KB_SCRIPT_PATH="MinimalWebApp2/.pipelineconfig"
     }
@@ -51,12 +51,15 @@ pipeline {
                     echo "BUILD_CAKE_SCRIPT config is ${cakeScript}"
                     if (cakeScript) {
                         echo "cakeScript configured"
-                        env.BUILD_CAKE_SCRIPT = cakeScript
+                    }
+                    else{
+                        // use default
+                        cakeScript = "/home/jenkins/template-run/cake/build.min.cake"
                     }
                 }
                 dir("MinimalWebApp2") {
                     echo "Calling BUILD_CAKE_SCRIPT config is ${BUILD_CAKE_SCRIPT}"
-                    sh "dotnet cake ${BUILD_CAKE_SCRIPT} --nugetconfig ${HOME}/.nuget/NuGet/NuGet.Config --verbosity Verbose"
+                    sh "dotnet cake ${cakeScript} --nugetconfig ${HOME}/.nuget/NuGet/NuGet.Config --verbosity Verbose"
                 }
             }
         }
