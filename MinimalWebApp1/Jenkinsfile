@@ -26,6 +26,8 @@ pipeline {
         stage('Restore & Build') {
             steps {
                 echo "Restoring and building .NET project..."
+                sh "pwd"
+                sh "ls -lart"
                 sh "dotnet restore ${PROJECT_NAME}.csproj"
                 sh "dotnet build ${PROJECT_NAME}.csproj --configuration Release"
             }
