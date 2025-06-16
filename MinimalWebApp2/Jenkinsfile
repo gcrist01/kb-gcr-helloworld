@@ -47,8 +47,7 @@ pipeline {
             steps {
                 echo "Use Cake Build..."
                 script {
-                    def config = sh(script: "yq '.build.cakeScript' ${KB_CODEBUILD_SRC_DIR}/${KB_SCRIPT_PATH}/pipeline.yaml", returnStdout: true).trim()
-                    def cakeScript = "${build.cakeScript}"
+                    def cakeScript = sh(script: "yq '.build.cakeScript' ${KB_CODEBUILD_SRC_DIR}/${KB_SCRIPT_PATH}/pipeline.yaml", returnStdout: true).trim()
                     echo "BUILD_CAKE_SCRIPT config is ${cakeScript}"
                     //if (cakeScript) {
                     //    env.BUILD_CAKE_SCRIPT = cakeScript
