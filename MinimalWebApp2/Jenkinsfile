@@ -42,18 +42,19 @@ pipeline {
             steps {
                 echo "Use Cake Build..."
                 dir("MinimalWebApp2") {
-                script {
-                    def cakeScript = sh(script: "yq '.config.build.cakeScript' ${KB_CODEBUILD_SRC_DIR}/${KB_SCRIPT_PATH}/pipeline.yaml", returnStdout: true).trim()
-                    echo "BUILD_CAKE_SCRIPT config is ${cakeScript}"
-                    if (cakeScript) {
-                        echo "cakeScript configured"
+                    script {
+                        def cakeScript = sh(script: "yq '.config.build.cakeScript' ${KB_CODEBUILD_SRC_DIR}/${KB_SCRIPT_PATH}/pipeline.yaml", returnStdout: true).trim()
+                        echo "BUILD_CAKE_SCRIPT config is ${cakeScript}"
+                        if (cakeScript) {
+                            echo "cakeScript configured"
+                        }
+                        else{
+                            // use default
+                            cakeScript = "/home/jenkins/template-run/cake/build.min.cake"
+                        }
+                        echo "Calling BUILD_CAKE_SCRIPT config is ${BUILD_CAKE_SCRIPT}"
+                        sh "dotnet cake ${cakeScript} --nugetconfig ${HOME}/.nuget/NuGet/NuGet.Config --verbosity Verbose"
                     }
-                    else{
-                        // use default
-                        cakeScript = "/home/jenkins/template-run/cake/build.min.cake"
-                    }
-                    echo "Calling BUILD_CAKE_SCRIPT config is ${BUILD_CAKE_SCRIPT}"
-                    sh "dotnet cake ${cakeScript} --nugetconfig ${HOME}/.nuget/NuGet/NuGet.Config --verbosity Verbose"
                 }
             }
         }
