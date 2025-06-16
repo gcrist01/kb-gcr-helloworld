@@ -1,5 +1,7 @@
 pipeline {
-    agent { label 'agent1' }
+    agent {
+        label 'cake'
+    }
 
     environment {
         PROJECT_NAME = 'MinimalWebApp'
