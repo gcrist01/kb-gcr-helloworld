@@ -11,17 +11,17 @@ pipeline {
         PATH = "${env.WORKSPACE}/.dotnet/tools:${env.PATH}"
         DOTNET_CLI_TELEMETRY_OPTOUT = 1
 
-        // Hacks to make the cake build find the config
-        BUILD_CAKE_SCRIPT="/home/jenkins/template-run/cake/build.min.cake"
-        KB_CODEBUILD_SRC_DIR="${env.WORKSPACE}"
-        KB_SCRIPT_PATH="MinimalWebApp2/.pipelineconfig"
-
         // Hacks to make it work as the CICD environment would
         PROD_ECR_HOST_NAME="250300400957.dkr.ecr.ap-southeast-2.amazonaws.com"
         NON_PROD_ECR_HOST_NAME="041371538652.dkr.ecr.ap-southeast-2.amazonaws.com"
         SERVICEACCOUNT_NAME="sf-thing-api"
         STAGE_ACCOUNT_ID="041371538652"
         STAGE_ECR_HOST_NAME="041371538652.dkr.ecr.ap-southeast-2.amazonaws.com"
+
+        // Hacks to make the cake build find the config
+        BUILD_CAKE_SCRIPT="/home/jenkins/template-run/cake/build.min.cake"
+        KB_CODEBUILD_SRC_DIR="${env.WORKSPACE}"
+        KB_SCRIPT_PATH="MinimalWebApp2/.pipelineconfig"
     }
 
     stages {
@@ -32,6 +32,7 @@ pipeline {
                 sh "dotnet --version"
                 sh "id"
                 sh "ls -lart /home/jenkins/template-run/" //ls: cannot access '/root/template-run/': Permission denied
+                sh " ls ${HOME}/.nuget/NuGet/NuGet.Config"
                 sh "dotnet new tool-manifest --force"
                 sh "dotnet tool restore"
                 sh "dotnet cake --info"
@@ -47,7 +48,7 @@ pipeline {
                 echo "Use Cake Build..."
                 //sh "ls -lart /home/jenkins/template-run/"
                 dir("MinimalWebApp2") {
-                    sh "dotnet cake ${BUILD_CAKE_SCRIPT} --verbosity Verbose"
+                    sh "dotnet cake ${BUILD_CAKE_SCRIPT} --nugetconfig "${HOME}/.nuget/NuGet/NuGet.Config" --verbosity Verbose"
                 }
             }
         }
