@@ -33,6 +33,7 @@ pipeline {
                 sh "dotnet new tool-manifest --force"
                 sh "dotnet tool restore"
                 sh "dotnet cake --info"
+                sh "ls -lart ${env.WORKSPACE}"
             }
         }
 
