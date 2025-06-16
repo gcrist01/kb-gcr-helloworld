@@ -5,6 +5,7 @@ pipeline {
         PROJECT_NAME = 'MinimalWebApp'
         DOCKER_IMAGE = 'minimal-webapp'
         DOTNET_CLI_HOME = "${env.WORKSPACE}/.dotnet"
+        DOCKER_CONFIG="/home/jenkins/.docker"
         PATH = "${env.WORKSPACE}/.dotnet/tools:${env.PATH}"
         DOTNET_CLI_TELEMETRY_OPTOUT = 1
     }
