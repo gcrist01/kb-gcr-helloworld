@@ -29,14 +29,14 @@ pipeline {
             steps {
                 echo "Setup..."
                 sh "uname -a"
-                sh "dotnet --version"
+                //sh "dotnet --version"
                 sh "id"
-                sh "ls -lart /home/jenkins/template-run/" //ls: cannot access '/root/template-run/': Permission denied
-                sh "ls ${HOME}/.nuget/NuGet/NuGet.Config"
+                //sh "ls -lart /home/jenkins/template-run/" //ls: cannot access '/root/template-run/': Permission denied
+                //sh "ls ${HOME}/.nuget/NuGet/NuGet.Config"
                 sh "dotnet new tool-manifest --force"
                 sh "dotnet tool restore"
                 sh "dotnet cake --info"
-                sh "ls -lart ${env.WORKSPACE}"
+                //sh "ls -lart ${env.WORKSPACE}"
             }
         }
 
@@ -47,18 +47,19 @@ pipeline {
             steps {
                 echo "Use Cake Build..."
                 script {
-                    def config = readYaml file: "${KB_CODEBUILD_SRC_DIR}/${KB_SCRIPT_PATH}/pipeline.yaml"
+                    def config = sh(script: "yq '.build.cakeScript' ${KB_CODEBUILD_SRC_DIR}/${KB_SCRIPT_PATH}/pipeline.yaml", returnStdout: true).trim()
                     def cakeScript = "${build.cakeScript}"
-                    if (cakeScript) {
-                        env.BUILD_CAKE_SCRIPT = cakeScript
-                        echo "VERSION set to ${env.VERSION}"
-                    } else {
-                        echo "No build.cakeScript configured, env.BUILD_CAKE_SCRIPT use dafult"
-                        env.BUILD_CAKE_SCRIPT = "/home/jenkins/template-run/cake/build.min.cake"
-                    }
-
+                    echo "BUILD_CAKE_SCRIPT config is ${cakeScript}"
+                    //if (cakeScript) {
+                    //    env.BUILD_CAKE_SCRIPT = cakeScript
+                    //    echo "BUILD_CAKE_SCRIPT set to ${env.BUILD_CAKE_SCRIPT}"
+                    //} else {
+                    //    echo "No build.cakeScript configured, env.BUILD_CAKE_SCRIPT use dafult"
+                    //    env.BUILD_CAKE_SCRIPT = "/home/jenkins/template-run/cake/build.min.cake"
+                    //}
                 }
                 dir("MinimalWebApp2") {
+                    echo "Calling BUILD_CAKE_SCRIPT config is ${BUILD_CAKE_SCRIPT}"
                     sh "dotnet cake ${BUILD_CAKE_SCRIPT} --nugetconfig ${HOME}/.nuget/NuGet/NuGet.Config --verbosity Verbose"
                 }
             }
