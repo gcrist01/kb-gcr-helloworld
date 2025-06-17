@@ -6,7 +6,7 @@ config:
     dockerImageBuild:
     - image: tipu/foo-webapi
       buildargs: []
-      dockerfile: MinimalWebApp2/Dockerfile
-      context: MinimalWebApp2/
+      dockerfile: MinimalWebApp3/Dockerfile
+      context: MinimalWebApp3/
     ecrImagePush:
     - tipu/foo-webapi
