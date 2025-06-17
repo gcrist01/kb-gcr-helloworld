@@ -8,5 +8,5 @@ config:
       buildargs: []
       dockerfile: MinimalWebApp3/Dockerfile
       context: MinimalWebApp3/
-    ecrImagePush:
-    - tipu/foo-webapi
+#    ecrImagePush:
+#    - tipu/foo-webapi
